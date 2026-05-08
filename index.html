@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- biome-ignore lint/a11y/useValidLang: <explanation> -->
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finitos</title>
+</head>
+<body>
+    <canvas id="canvas" style="background-color: aqua;" width="1000" height="1000"></canvas>
+    <script src="classes/main.js"></script>
+    <script>
+        const canvas = document.getElementById("canvas");
+
+        const gridW = parseInt(prompt("Defina a largura da matriz"), 10);
+        const gridH = parseInt(prompt("Defina a altura da matriz"), 10);
+        const tAmb = parseFloat(prompt("Defina a temperatura ambiente"));
+
+        const gridWidthInPixels = 500;
+        const gridHeightInPixels = 500;
+
+        const cellHeight = gridHeightInPixels / gridH;
+        const cellWidth = gridWidthInPixels / gridW;
+
+        const renderer = new Renderer(canvas);
+        const grid = new Grid(gridW, gridH, cellWidth, cellHeight, tAmb, renderer);
+
+        grid.setup();
+
+    </script>
+</body>
+</html>
