@@ -63,6 +63,19 @@ class Grid {
 		}
 	}
 	update() {
+		const temps = [];
+		for (const row of this.grid) {
+			for (const cell of row) {
+				temps.push(this.getNextTemp(cell));
+			}
+		}
+		for (let i = 0; i < this.grid.length; i++) {
+			for (let j = 0; j < this.grid[0].length; j++) {
+				this.grid[i][j].temp = temps[i * this.width + j];
+			}
+		}
+	}
+	draw() {
 		for (const row of this.grid) {
 			for (const cell of row) {
 				cell.draw(this.renderer);
@@ -79,6 +92,18 @@ class Grid {
 			}
 		}
 		return !(maxDifference < precision);
+	}
+	getNextTemp(cell) {
+		const x = cell.x;
+		const y = cell.y;
+
+		return (
+			(this.grid[x + 1 * (x < this.grid.length - 1)][y] +
+				this.grid[x - 1 * (x > 0)][y] +
+				this.grid[x][y + 1 * (y < this.grid.length - 1)] +
+				this.grid[x][y - 1 * (y > 0)]) /
+			4
+		);
 	}
 }
 class Renderer {

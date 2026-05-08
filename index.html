@@ -27,6 +27,12 @@
 
         grid.setup();
 
+        function loop(){
+            grid.update();
+            grid.draw();
+            requestAnimationFrame(loop)
+        }
+        requestAnimationFrame(loop);
     </script>
 </body>
 </html>
