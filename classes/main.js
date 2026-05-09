@@ -11,12 +11,14 @@ class Polygon {
 	}
 }
 class Cell {
-	constructor(x, y, temp, width, height) {
+	constructor(x, y, temp, width, height, minTemp, maxTemp) {
 		this.x = x;
 		this.y = y;
 		this.temp = temp;
 		this.width = width;
 		this.height = height;
+		this.minTemp = minTemp;
+		this.maxTemp = maxTemp;
 	}
 	draw(renderer) {
 		renderer.drawCell(
@@ -24,10 +26,12 @@ class Cell {
 			this.y * this.height,
 			this.width,
 			this.height,
-			"red",
-		); // mudar red pelo resultado de getColor
+			this.getColor(),
+		);
 	}
-	getColor() {}
+	getColor() {
+		return "red"; // código faltante
+	}
 }
 class Grid {
 	constructor(width, height, cellWidth, cellHeight, tAmb, renderer) {
@@ -61,6 +65,23 @@ class Grid {
 				),
 			);
 		}
+		const maxTemp = Math.max(...this.polygons.map((p) => p.temp));
+
+		this.grid = Array.from({ length: this.height }, (_, i) =>
+			Array.from(
+				{ length: this.width },
+				(_, j) =>
+					new Cell(
+						i,
+						j,
+						this.tAmb,
+						this.cellWidth,
+						this.cellHeight,
+						this.tAmb,
+						maxTemp,
+					),
+			),
+		);
 	}
 	update() {
 		const temps = [];
@@ -98,10 +119,10 @@ class Grid {
 		const y = cell.y;
 
 		return (
-			(this.grid[x + 1 * (x < this.grid.length - 1)][y] +
-				this.grid[x - 1 * (x > 0)][y] +
-				this.grid[x][y + 1 * (y < this.grid.length - 1)] +
-				this.grid[x][y - 1 * (y > 0)]) /
+			(this.grid[x + 1 * (x < this.grid.length - 1)][y].temp +
+				this.grid[x - 1 * (x > 0)][y].temp +
+				this.grid[x][y + 1 * (y < this.grid[0].length - 1)].temp +
+				this.grid[x][y - 1 * (y > 0)].temp) /
 			4
 		);
 	}

@@ -16,8 +16,8 @@
         const gridH = parseInt(prompt("Defina a altura da matriz"), 10);
         const tAmb = parseFloat(prompt("Defina a temperatura ambiente"));
 
-        const gridWidthInPixels = 500;
-        const gridHeightInPixels = 500;
+        const gridWidthInPixels = 1000;
+        const gridHeightInPixels = 1000;
 
         const cellHeight = gridHeightInPixels / gridH;
         const cellWidth = gridWidthInPixels / gridW;
@@ -28,9 +28,13 @@
         grid.setup();
 
         function loop(){
+            const before = grid.grid.map(row => row.map(c => ({ temp: c.temp })));
             grid.update();
             grid.draw();
+
+            if (grid.needsToStop(before, grid.grid, 0.01)) return; 
             requestAnimationFrame(loop)
+
         }
         requestAnimationFrame(loop);
     </script>
