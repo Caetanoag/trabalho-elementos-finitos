@@ -37,6 +37,8 @@ class Cell {
 		this.height = height;
 		this.minTemp = minTemp;
 		this.maxTemp = maxTemp;
+		this.isInsidePolygon = false;
+		this.color = new Color(0, 0, 0);
 	}
 	draw(renderer) {
 		renderer.drawCell(
@@ -48,21 +50,22 @@ class Cell {
 		);
 	}
 	getColor() {
-		let cor1 = new Color(0, 0, 0);
-
-		if (Math.abs(this.temp - this.oldTemp) >= 2.1) {
+		if (this.isInsidePolygon) {
+			return this.color.getString();
+		}
+		if (Math.abs(this.temp - this.oldTemp) >= 0.1) {
 			if (this.temp < this.maxTemp / 3) {
-				cor1 = Color.sumColors(cor1, new Color(8, 0, 0));
+				this.color = Color.sumColors(this.color, new Color(8, 0, 0));
 			} else if (
 				this.temp >= this.maxTemp / 3 &&
 				this.temp < (this.maxTemp * 2) / 3
 			) {
-				cor1 = Color.sumColors(cor1, new Color(0, 8, 0));
+				this.color = Color.sumColors(this.color, new Color(0, 8, 0));
 			} else if (this.temp >= (this.maxTemp * 2) / 3) {
-				cor1 = Color.sumColors(cor1, new Color(0, 0, 8));
+				this.color = Color.sumColors(this.color, new Color(0, 0, 8));
 			}
 
-			return color ? cor1.getString() : "black";
+			return this.color.getString();
 		}
 		return "black";
 	}
@@ -116,16 +119,35 @@ class Grid {
 					),
 			),
 		);
+		for (const polygon of this.polygons) {
+			for (const row of this.grid) {
+				for (const cell of row) {
+					if (this.isCellInside(cell, polygon)) {
+						cell.temp = polygon.temp;
+						cell.oldTemp = polygon.temp;
+						cell.isInsidePolygon = true;
+						if (polygon.temp >= (maxTemp * 2) / 3) {
+							cell.color = new Color(0, 0, 255);
+						} else if (polygon.temp >= maxTemp / 3) {
+							cell.color = new Color(0, 255, 0);
+						} else {
+							cell.color = new Color(255, 0, 0);
+						}
+					}
+				}
+			}
+		}
 	}
 	update() {
 		const temps = [];
 		for (const row of this.grid) {
 			for (const cell of row) {
-				temps.push(this.getNextTemp(cell));
+				temps.push(cell.isInsidePolygon ? cell.temp : this.getNextTemp(cell));
 			}
 		}
 		for (let i = 0; i < this.grid.length; i++) {
 			for (let j = 0; j < this.grid[0].length; j++) {
+				this.grid[i][j].oldTemp = this.grid[i][j].temp;
 				this.grid[i][j].temp = temps[i * this.width + j];
 			}
 		}
@@ -159,6 +181,30 @@ class Grid {
 				this.grid[x][y - 1 * (y > 0)].temp) /
 			4
 		);
+	}
+	isCellInside(cell, polygon) {
+		const { centerX, centerY, radius, sides, angle } = polygon;
+		const vertices = [];
+		const px = cell.x * cell.width + cell.width / 2;
+		const py = cell.y * cell.height + cell.height / 2;
+		for (let i = 0; i < sides; i++) {
+			const a = angle + (Math.PI * 2 * i) / sides;
+			vertices.push({
+				x: centerX + Math.cos(a) * radius,
+				y: centerY + Math.sin(a) * radius,
+			});
+		}
+		let dentro = false;
+		for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+			const xi = vertices[i].x;
+			const yi = vertices[i].y;
+			const xj = vertices[j].x;
+			const yj = vertices[j].y;
+			const cruza =
+				yi > py !== yj > py && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi;
+			if (cruza) dentro = !dentro;
+		}
+		return dentro;
 	}
 }
 class Renderer {

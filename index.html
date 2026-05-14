@@ -7,7 +7,7 @@
     <title>Finitos</title>
 </head>
 <body>
-    <canvas id="canvas" style="background-color: aqua;" width="1000" height="1000"></canvas>
+    <canvas id="canvas" style="background-color: rgb(0, 0, 0);" width="1000" height="1000"></canvas>
     <script src="classes/main.js"></script>
     <script>
         const canvas = document.getElementById("canvas");
@@ -32,7 +32,10 @@
             grid.update();
             grid.draw();
 
-            if (grid.needsToStop(before, grid.grid, 0.01)) return; 
+            if (!grid.needsToStop(before, grid.grid, 0.01)) {
+                console.log("Parou");
+                return;
+            }
             requestAnimationFrame(loop)
 
         }
