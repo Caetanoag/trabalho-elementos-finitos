@@ -50,20 +50,17 @@ class Cell {
 		);
 	}
 	getColor() {
-		if (this.isInsidePolygon) {
-			return this.color.getString();
-		}
-		if (Math.abs(this.temp - this.oldTemp) >= 0.1) {
-			if (this.temp < this.maxTemp / 3) {
-				this.color = Color.sumColors(this.color, new Color(8, 0, 0));
-			} else if (
-				this.temp >= this.maxTemp / 3 &&
-				this.temp < (this.maxTemp * 2) / 3
-			) {
-				this.color = Color.sumColors(this.color, new Color(0, 8, 0));
-			} else if (this.temp >= (this.maxTemp * 2) / 3) {
-				this.color = Color.sumColors(this.color, new Color(0, 0, 8));
-			}
+		if (this.isInsidePolygon) return this.color.getString();
+
+		const t = (this.temp - this.minTemp) / (this.maxTemp - this.minTemp);
+		if (t < 0.01) return "black";
+
+		if (this.temp < this.maxTemp / 3) {
+			this.color = Color.sumColors(this.color, new Color(8, 0, 0));
+		} else if (this.temp < (this.maxTemp * 2) / 3) {
+			this.color = Color.sumColors(this.color, new Color(0, 8, 0));
+		} else {
+			this.color = Color.sumColors(this.color, new Color(8, 8, 8));
 		}
 		return this.color.getString();
 	}
@@ -125,7 +122,7 @@ class Grid {
 						cell.oldTemp = polygon.temp;
 						cell.isInsidePolygon = true;
 						if (polygon.temp >= (maxTemp * 2) / 3) {
-							cell.color = new Color(0, 0, 255);
+							cell.color = new Color(255, 255, 255);
 						} else if (polygon.temp >= maxTemp / 3) {
 							cell.color = new Color(0, 255, 0);
 						} else {
