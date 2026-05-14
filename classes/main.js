@@ -56,11 +56,15 @@ class Cell {
 		if (t < 0.01) return "black";
 
 		if (this.temp < this.maxTemp / 3) {
-			this.color = Color.sumColors(this.color, new Color(8, 0, 0));
+			this.color = new Color(Math.floor(t * 255), 0, 0);
 		} else if (this.temp < (this.maxTemp * 2) / 3) {
-			this.color = Color.sumColors(this.color, new Color(0, 8, 0));
+			this.color = new Color(Math.floor(t * 255), Math.floor(t * 100), 0);
 		} else {
-			this.color = Color.sumColors(this.color, new Color(8, 8, 8));
+			this.color = new Color(
+				Math.floor(t * 255),
+				Math.floor(t * 255),
+				Math.floor(t * 255),
+			);
 		}
 		return this.color.getString();
 	}
