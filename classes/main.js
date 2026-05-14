@@ -128,7 +128,7 @@ class Grid {
 						if (polygon.temp >= (maxTemp * 2) / 3) {
 							cell.color = new Color(255, 255, 255);
 						} else if (polygon.temp >= maxTemp / 3) {
-							cell.color = new Color(0, 255, 0);
+							cell.color = new Color(255, 100, 0);
 						} else {
 							cell.color = new Color(255, 0, 0);
 						}
