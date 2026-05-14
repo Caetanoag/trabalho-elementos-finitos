@@ -166,7 +166,7 @@ class Grid {
 				}
 			}
 		}
-		return !(maxDifference < precision);
+		return maxDifference < precision;
 	}
 	getNextTemp(cell) {
 		const x = cell.x;

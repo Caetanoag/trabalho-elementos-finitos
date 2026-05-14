@@ -32,7 +32,7 @@
             grid.update();
             grid.draw();
 
-            if (!grid.needsToStop(before, grid.grid, 0.01)) {
+            if (grid.needsToStop(before, grid.grid, 0.01)) {
                 console.log("Parou");
                 return;
             }
