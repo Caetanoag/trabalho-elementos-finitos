@@ -11,9 +11,9 @@ class Color {
 	}
 	static sumColors(color1, color2) {
 		return new Color(
-			(color1.r + color2.r) % 256,
-			(color1.g + color2.g) % 256,
-			(color1.b + color2.b) % 256,
+			Math.min(color1.r + color2.r, 255),
+			Math.min(color1.g + color2.g, 255),
+			Math.min(color1.b + color2.b, 255),
 		);
 	}
 }
@@ -64,10 +64,8 @@ class Cell {
 			} else if (this.temp >= (this.maxTemp * 2) / 3) {
 				this.color = Color.sumColors(this.color, new Color(0, 0, 8));
 			}
-
-			return this.color.getString();
 		}
-		return "black";
+		return this.color.getString();
 	}
 }
 class Grid {
