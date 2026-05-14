@@ -1,5 +1,22 @@
 /** biome-ignore-all lint/correctness/useParseIntRadix: <explanation> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <explanation> */
+class Color {
+	constructor(r, g, b) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+	}
+	getString() {
+		return `rgb(${this.r}, ${this.g}, ${this.b})`;
+	}
+	static sumColors(color1, color2) {
+		return new Color(
+			(color1.r + color2.r) % 256,
+			(color1.g + color2.g) % 256,
+			(color1.b + color2.b) % 256,
+		);
+	}
+}
 class Polygon {
 	constructor(centerX, centerY, radius, angle, sides, temp) {
 		this.centerX = centerX;
@@ -14,6 +31,7 @@ class Cell {
 	constructor(x, y, temp, width, height, minTemp, maxTemp) {
 		this.x = x;
 		this.y = y;
+		this.oldTemp = temp;
 		this.temp = temp;
 		this.width = width;
 		this.height = height;
@@ -30,7 +48,23 @@ class Cell {
 		);
 	}
 	getColor() {
-		return "red"; // código faltante
+		let cor1 = new Color(0, 0, 0);
+
+		if (Math.abs(this.temp - this.oldTemp) >= 2.1) {
+			if (this.temp < this.maxTemp / 3) {
+				cor1 = Color.sumColors(cor1, new Color(8, 0, 0));
+			} else if (
+				this.temp >= this.maxTemp / 3 &&
+				this.temp < (this.maxTemp * 2) / 3
+			) {
+				cor1 = Color.sumColors(cor1, new Color(0, 8, 0));
+			} else if (this.temp >= (this.maxTemp * 2) / 3) {
+				cor1 = Color.sumColors(cor1, new Color(0, 0, 8));
+			}
+
+			return color ? cor1.getString() : "black";
+		}
+		return "black";
 	}
 }
 class Grid {
