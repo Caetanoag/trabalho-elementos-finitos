@@ -4,29 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Finitos</title>
 </head>
 <body>
-    <canvas id="canvas" style="background-color: rgb(0, 0, 0);" width="1000" height="1000"></canvas>
+    <div class="selection">
+        <form>
+            <input type="text" id="Largura da Grid" name="Largura da Grid">
+            <input type="text" id="Altura da Grid"  name="Altura da Grid">
+            <label for="Largura da Grid">Largura da Grid</label>
+            <label for="Altura da Grid">Altura da Grid</label>
+            <input type="button" value="Iniciar" onclick="_canvasSetup()">
+        </form>
+    </div>
+    <canvas id="canvas"></canvas>
     <script src="classes/main.js"></script>
     <script>
-        const canvas = document.getElementById("canvas");
+        let canvas;
+        let gridW;
+        let gridH;
+        let tAmb;
+        let gridWidthInPixels;
+        let gridHeightInPixels;
+        let cellHeight;
+        let cellWidth;
+        let renderer;
+        let grid;
+        
+        function _canvasSetup() {
+            canvas = document.getElementById("canvas");
+            
+            gridW = document.getElementById("Largura da Grid");
+            gridH = document.getElementById("Altura da Grid");
+            gridW = parseInt(gridW.value, 10);
+            gridH = parseInt(gridH.value, 10);
+            tAmb = parseFloat(prompt("Defina a temperatura ambiente")); 
+            gridWidthInPixels = 1000;
+            gridHeightInPixels = 1000; 
+            cellHeight = gridHeightInPixels / gridH;
+            cellWidth = gridWidthInPixels / gridW; 
+            renderer = new Renderer(canvas);
+            grid = new Grid(gridW, gridH, cellWidth, cellHeight, tAmb, renderer);
 
-        const gridW = parseInt(prompt("Defina a largura da matriz"), 10);
-        const gridH = parseInt(prompt("Defina a altura da matriz"), 10);
-        const tAmb = parseFloat(prompt("Defina a temperatura ambiente"));
+            grid.setup();
+            requestAnimationFrame(loop);
 
-        const gridWidthInPixels = 1000;
-        const gridHeightInPixels = 1000;
-
-        const cellHeight = gridHeightInPixels / gridH;
-        const cellWidth = gridWidthInPixels / gridW;
-
-        const renderer = new Renderer(canvas);
-        const grid = new Grid(gridW, gridH, cellWidth, cellHeight, tAmb, renderer);
-
-        grid.setup();
-
+        }   
         function loop(){
             const before = grid.grid.map(row => row.map(c => ({ temp: c.temp })));
             grid.update();
@@ -39,7 +62,7 @@
             requestAnimationFrame(loop)
 
         }
-        requestAnimationFrame(loop);
+        
     </script>
 </body>
 </html>
