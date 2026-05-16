@@ -3,22 +3,20 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
 	margin: 0;
 	background-color: #282c34;
 	color: #abb2bf;
 }
 
 .setup-panel {
-	width: clamp(10vw, 10%, 20vw);
 	background-color: #21252b;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	margin-bottom: 20px;
 	padding: 20px;
 	border-radius: 6px;
 	border: 1px solid #3e4451;
+	max-width: 50vw;
 }
 
 .setup-panel label {
@@ -58,26 +56,23 @@ body {
 }
 .polygon-cards-container {
 	max-width: 100%;
-	margin: 10%;
+
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 10px;
-	width: 100%;
 }
 
 .polygon-card {
-	max-width: 40%;
 	display: flex;
 	flex-direction: column;
+
 	gap: 4px;
 	background-color: #21252b;
 	border: 1px solid #3e4451;
 	border-radius: 6px;
 	padding: 10px;
 	color: #abb2bf;
-	width: 100%;
-	box-sizing: border-box;
 }
 .field-group {
 	display: flex;
