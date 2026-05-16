@@ -19,26 +19,22 @@
     <canvas id="canvas"></canvas>
     <script src="classes/main.js"></script>
     <script>
-        let canvas;
-        let gridW;
-        let gridH;
-        let tAmb;
-        let cellHeight;
-        let cellWidth;
         let renderer;
         let grid;
         
         function _canvasSetup() {
-            canvas = document.getElementById("canvas");
+            const canvas = document.getElementById("canvas");
             const gridWidthInPixels = 1000;
             const gridHeightInPixels = 1000; 
             canvas.width = gridWidthInPixels;
             canvas.height = gridHeightInPixels;
-            gridW = parseInt(document.getElementById("Largura da Grid").value, 10);
-            gridH = parseInt(document.getElementById("Altura da Grid").value, 10);
-            tAmb = parseFloat(prompt("Defina a temperatura ambiente")); 
-            cellHeight = gridHeightInPixels / gridH;
-            cellWidth = gridWidthInPixels / gridW; 
+            const gridW = parseInt(document.getElementById("Largura da Grid").value, 10);
+            const gridH = parseInt(document.getElementById("Altura da Grid").value, 10);
+            const tAmb = parseFloat(prompt("Defina a temperatura ambiente")); 
+            const cellHeight = gridHeightInPixels / gridH;
+            const cellWidth = gridWidthInPixels / gridW; 
+            
+            
             renderer = new Renderer(canvas);
             grid = new Grid(gridW, gridH, cellWidth, cellHeight, tAmb, renderer, {x: gridWidthInPixels/gridW, y: gridHeightInPixels/gridH});
 
