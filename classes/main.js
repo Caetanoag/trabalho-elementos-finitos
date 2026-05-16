@@ -53,31 +53,47 @@ class Cell {
 		if (this.isInsidePolygon) return this.color.getString();
 
 		const t = (this.temp - this.minTemp) / (this.maxTemp - this.minTemp);
-		if (t < 0.01) return "black";
+		// if (t < 0.01) return "black";
 
-		if (this.temp < this.maxTemp / 3) {
+		/*if (this.temp < this.maxTemp / 3) {
 			this.color = new Color(Math.floor(t * 255), 0, 0);
 		} else if (this.temp < (this.maxTemp * 2) / 3) {
-			this.color = new Color(Math.floor(t * 255), Math.floor(t * 100), 0);
+			this.color = new Color(255, Math.floor(t * 255), 0);
 		} else {
 			this.color = new Color(
-				Math.floor(t * 255),
-				Math.floor(t * 255),
+				255,
+				255,
 				Math.floor(t * 255),
 			);
-		}
+		}*/
+
+		// if (t < 0.33) {
+		// 	this.color = new Color(Math.floor(t * 255), 0, 0);
+		// } else if ((t > 0.33) && (t < 0.66)) {
+		// 	this.color = new Color(255, Math.floor((t-0.33) * 255), 0);
+		// } else {
+		// 	this.color = new Color(
+		// 		255,
+		// 		255,
+		// 		Math.floor((t-0.66) * 255),
+		// 	);
+		// }
+		this.color = new Color(Math.floor(t * 255), Math.floor(t  / 2 * 255), Math.floor(t / 3 * 255));
 		return this.color.getString();
 	}
 }
 class Grid {
-	constructor(width, height, cellWidth, cellHeight, tAmb, renderer) {
+	constructor(width, height, cellWidth, cellHeight, tAmb, renderer, ratio) {
 		this.width = width;
 		this.height = height;
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
 		this.tAmb = tAmb;
 		this.renderer = renderer;
-
+		this.ratio = {
+			x: ratio.x,
+			y: ratio.y
+		}
 		this.grid = [];
 		this.polygons = [];
 	}
@@ -92,8 +108,8 @@ class Grid {
 		for (let i = 0; i < polygonSize; i++) {
 			this.polygons.push(
 				new Polygon(
-					parseInt(prompt("Diga o centroX do poligono")),
-					parseInt(prompt("Diga o centroY do poligono")),
+					parseInt(prompt("Diga o centroX do poligono")) * this.ratio.x,
+					parseInt(prompt("Diga o centroY do poligono")) * this.ratio.y,
 					parseInt(prompt("Diga o raio do poligono")),
 					parseFloat(prompt("Diga o angulo do poligono")),
 					parseInt(prompt("Diga a quantidade de lados do poligono")),
@@ -101,7 +117,8 @@ class Grid {
 				),
 			);
 		}
-		const maxTemp = Math.max(...this.polygons.map((p) => p.temp));
+		//const maxTemp = Math.max(...this.polygons.map((p) => p.temp));
+		const maxTemp = 100;
 
 		this.grid = Array.from({ length: this.height }, (_, i) =>
 			Array.from(
@@ -215,5 +232,4 @@ class Renderer {
 		this.context.fillStyle = color;
 		this.context.fillRect(x, y, width, height);
 	}
-	drawPolygon(_polygon) {}
 }
