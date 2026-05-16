@@ -88,7 +88,7 @@ function _drawPolygonCards(polyNum) {
 		card.classList.add("polygon-card");
 
 		const title = document.createElement("h3");
-		title.textContent = `Polygon ${i + 1}`;
+		title.textContent = `Poligono ${i + 1}`;
 		card.appendChild(title);
 
 		for (const field of fields) {
