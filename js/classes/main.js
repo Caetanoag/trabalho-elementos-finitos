@@ -78,12 +78,25 @@ class Cell {
 		// 		Math.floor((t-0.66) * 255),
 		// 	);
 		// }
-		this.color = new Color(Math.floor(t * 255), Math.floor(t  / 2 * 255), Math.floor(t / 3 * 255));
+		this.color = new Color(
+			Math.floor(t * 255),
+			Math.floor((t / 2) * 255),
+			Math.floor((t / 3) * 255),
+		);
 		return this.color.getString();
 	}
 }
 class Grid {
-	constructor(width, height, cellWidth, cellHeight, tAmb, renderer, ratio) {
+	constructor(
+		width,
+		height,
+		cellWidth,
+		cellHeight,
+		tAmb,
+		renderer,
+		ratio,
+		polygonsInfo,
+	) {
 		this.width = width;
 		this.height = height;
 		this.cellWidth = cellWidth;
@@ -92,10 +105,11 @@ class Grid {
 		this.renderer = renderer;
 		this.ratio = {
 			x: ratio.x,
-			y: ratio.y
-		}
+			y: ratio.y,
+		};
 		this.grid = [];
 		this.polygons = [];
+		this.polygonsInfo = polygonsInfo;
 	}
 	setup() {
 		this.grid = Array.from({ length: this.height }, (_, i) =>
@@ -103,17 +117,18 @@ class Grid {
 				return new Cell(i, j, this.tAmb, this.cellWidth, this.cellHeight);
 			}),
 		);
-		const polygonSize = parseInt(prompt("Diga a quantidade de poligonos"));
+		const polygonSize = this.polygonsInfo.count;
 
 		for (let i = 0; i < polygonSize; i++) {
+			const actualPolygon = this.polygonsInfo.polygons[i];
 			this.polygons.push(
 				new Polygon(
-					parseInt(prompt("Diga o centroX do poligono")) * this.ratio.x,
-					parseInt(prompt("Diga o centroY do poligono")) * this.ratio.y,
-					parseInt(prompt("Diga o raio do poligono")),
-					parseFloat(prompt("Diga o angulo do poligono")),
-					parseInt(prompt("Diga a quantidade de lados do poligono")),
-					parseFloat(prompt("Diga a temperatura do poligono")),
+					actualPolygon.centroX * this.ratio.x,
+					actualPolygon.centroY * this.ratio.y,
+					actualPolygon.raio,
+					actualPolygon.angulo,
+					actualPolygon.lados,
+					actualPolygon.temperatura,
 				),
 			);
 		}

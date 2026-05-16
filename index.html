@@ -5,57 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finitos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="selection">
-        <form>
-            <input type="text" id="Largura da Grid" name="Largura da Grid">
-            <input type="text" id="Altura da Grid"  name="Altura da Grid">
-            <label for="Largura da Grid">Largura da Grid</label>
-            <label for="Altura da Grid">Altura da Grid</label>
-            <input type="button" value="Iniciar" onclick="_canvasSetup()">
-        </form>
+    
+    <div id="setup-panel" class="setup-panel">
+        <label for="gridW">Largura da Grid</label>
+        <input type="number" name="gridW" id="gridW" placeholder="Largura da Grid" min="100" value="500" max="1000">
+        <label for="gridH">Altura da Grid</label>
+        <input type="number" name="gridH" id="gridH" placeholder="Altura da Grid" min="100" value="500" max="1000">
+        <label for="tAmb">Temperatura Ambiente</label>
+        <input type="number" name="tAmb" id="tAmb" placeholder="Temperatura Ambiente" min="-273" value="25" max="100">
+
+        <label for="polygons">Número de polígonos</label>
+        <input type="number" name="polygons" id="polygons" placeholder="Número de polígonos" min="1" value="1" max="20">
+
+        <button type="button" id="draw-polygon-cards-btn">Configurar Poligonos</button>
+        <div id="polygon-cards-container" class="polygon-cards-container"></div>
+        <button type="button" id="start-simulation-btn">Iniciar simulação</button>
+
     </div>
-    <canvas id="canvas"></canvas>
-    <script src="classes/main.js"></script>
-    <script>
-        let renderer;
-        let grid;
-        
-        function _canvasSetup() {
-            const canvas = document.getElementById("canvas");
-            const gridWidthInPixels = 1000;
-            const gridHeightInPixels = 1000; 
-            canvas.width = gridWidthInPixels;
-            canvas.height = gridHeightInPixels;
-            const gridW = parseInt(document.getElementById("Largura da Grid").value, 10);
-            const gridH = parseInt(document.getElementById("Altura da Grid").value, 10);
-            const tAmb = parseFloat(prompt("Defina a temperatura ambiente")); 
-            const cellHeight = gridHeightInPixels / gridH;
-            const cellWidth = gridWidthInPixels / gridW; 
-            
-            
-            renderer = new Renderer(canvas);
-            grid = new Grid(gridW, gridH, cellWidth, cellHeight, tAmb, renderer, {x: gridWidthInPixels/gridW, y: gridHeightInPixels/gridH});
 
-            grid.setup();
-            cancelAnimationFrame(loop);
-            requestAnimationFrame(loop);
-
-        }   
-        function loop(){
-            const before = grid.grid.map(row => row.map(c => ({ temp: c.temp })));
-            grid.update();
-            grid.draw();
-
-            if (grid.needsToStop(before, grid.grid, 0.01)) {
-                console.log("Parou");
-                return;
-            }
-            requestAnimationFrame(loop)
-
-        }
-        
-    </script>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script src="js/classes/main.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/frontend.js"></script>
+    
 </body>
 </html>
