@@ -15,9 +15,9 @@ document
 	.getElementById("draw-polygon-cards-btn")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
-		const polygonsNumber = parseInt(
-			document.getElementById("polygons").value,
-			10,
+		const polygonsNumber = Math.min(
+			20,
+			parseInt(document.getElementById("polygons").value, 10),
 		);
 		_drawPolygonCards(polygonsNumber);
 	});
@@ -26,7 +26,10 @@ function _canvasSetup() {
 	const gridW = parseInt(document.getElementById("gridW").value, 10);
 	const gridH = parseInt(document.getElementById("gridH").value, 10);
 	const tAmb = parseFloat(document.getElementById("tAmb").value);
-	const polygons = parseInt(document.getElementById("polygons").value, 10);
+	const polygons = Math.min(
+		20,
+		parseInt(document.getElementById("polygons").value, 10),
+	);
 	const canvas = document.getElementById("canvas");
 	canvas.style.display = "block";
 	canvas.width = 1000;

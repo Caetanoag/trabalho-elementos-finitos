@@ -10,6 +10,7 @@ body {
 }
 
 .setup-panel {
+	width: clamp(10vw, 10%, 20vw);
 	background-color: #21252b;
 	display: flex;
 	flex-direction: column;
@@ -56,13 +57,17 @@ body {
 	background-color: #528bce;
 }
 .polygon-cards-container {
+	max-width: 100%;
+	margin: 10%;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 10px;
 	width: 100%;
 }
 
 .polygon-card {
+	max-width: 40%;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -76,5 +81,6 @@ body {
 }
 .field-group {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 4px;
 }
